@@ -1,13 +1,16 @@
-import {GetServerSideProps, NextPage} from 'next'
+import {NextPage} from 'next'
 import Head from 'next/head'
 
 interface Props {
-    user: {
-        name: string
-    }
+    user: `Record<string, never>`
 }
 
-const Home : string = () => {
+const Home: NextPage<Props> = () => {
+    function handleClick(): void {
+        window.open(
+            'https://github.com/login/oauth/authorize?client_id=95f729efef07a38ddd92'
+        )
+    }
     return (
         <div>
             <Head>
@@ -15,7 +18,16 @@ const Home : string = () => {
                 <link rel='icon' href='/favicon.ico' />
             </Head>
 
-            <main></main>
+            <header>
+                <button type='button' onClick={handleClick}>
+                    <span> Log in with Github </span>
+                    <img
+                        alt='GitHub icon'
+                        src='https://img.icons8.com/ios-filled/2x/github.png'
+                        style={{height: '20px', width: '20px'}}
+                    />
+                </button>
+            </header>
 
             <footer></footer>
         </div>
@@ -23,16 +35,3 @@ const Home : string = () => {
 }
 
 export default Home
-
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
-    const response = await fetch('')
-    const data = await response.json()
-    console.log(data)
-    return {
-        props: {
-            user: {
-                name: data.username,
-            },
-        },
-    }
-}
