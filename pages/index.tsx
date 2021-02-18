@@ -1,20 +1,40 @@
+import {useEffect} from 'react'
 import {NextPage} from 'next'
 import Head from 'next/head'
+import {getGitHubUser} from './api/fetch'
 
-interface Props {
-    user: `Record<string, never>`
-}
+const client_id = process.env.NEXT_PUBLIC_CLIENT_ID || ''
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface Props {}
 
 const Home: NextPage<Props> = () => {
+    useEffect(() => {
+        ;(async () => {
+            // After requesting Github access, Github redirects back to your app with a code parameter
+            const url = window.location.href
+            const hasCode = url.includes('?code=')
+
+            // If Github API returns the code parameter
+            if (hasCode) {
+                const newUrl = url.split('?code=')
+                window.history.pushState({}, '', newUrl[0])
+
+                const code = newUrl[1]
+                const gitHubUser = await getGitHubUser(code)
+                console.log(gitHubUser)
+            }
+        })()
+    }, [])
+
     function handleClick(): void {
         window.open(
-            'https://github.com/login/oauth/authorize?client_id=95f729efef07a38ddd92'
+            `https://github.com/login/oauth/authorize?client_id=${client_id}`
         )
     }
     return (
         <div>
             <Head>
-                <title>Project Zone</title>
+                <title>Login Page</title>
                 <link rel='icon' href='/favicon.ico' />
             </Head>
 
