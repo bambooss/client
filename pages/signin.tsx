@@ -1,17 +1,19 @@
 import Head from 'next/head'
-import {useContext, useState} from 'react'
+import React, {useContext, useState} from 'react'
 import {AuthContext} from '../app/contexts/auth'
 import {useRouter} from 'next/router'
 import axios from 'axios'
+import { useCookies } from "react-cookie"
 
 const SignIn = (): JSX.Element => {
     const [state, setState] = useState({
         email: '',
         password: '',
     })
+    const [cookie, setCookie] = useCookies(['authorization'])
     const router = useRouter()
     const userContext = useContext(AuthContext)
-    const hanldeChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setState((previousState: typeof state) => {
             return {...previousState, [event.target.name]: event.target.value}
         })
@@ -19,12 +21,13 @@ const SignIn = (): JSX.Element => {
     const handleSubmit = (event: React.SyntheticEvent): void => {
         event.preventDefault()
         axios
-            .post('http://localhost:8080/user/login', {user: state})
+            .post('user/login', {user: state})
             .then(res => {
                 if (res.status === 200) {
                     console.log(res)
                     userContext?.login(res.data.user)
-                    router.push('/')
+                    setCookie('authorization', res.data.token)
+                    router.push('/').then()
                 } else {
                     console.log(res.data.error)
                 }
@@ -48,7 +51,7 @@ const SignIn = (): JSX.Element => {
                     name='email'
                     placeholder='please enter your email'
                     value={state.email}
-                    onChange={hanldeChange}
+                    onChange={handleChange}
                 />
                 <br />
                 <label htmlFor='password'>Password:</label>
@@ -59,7 +62,7 @@ const SignIn = (): JSX.Element => {
                     name='password'
                     placeholder='please enter your password'
                     value={state.password}
-                    onChange={hanldeChange}
+                    onChange={handleChange}
                 />
                 <br />
                 <input type='submit' value='SignIn' onClick={handleSubmit} />
