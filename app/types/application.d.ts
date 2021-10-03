@@ -1,16 +1,15 @@
-export interface IApplicantData {
+import {Status} from 'app/types/constants'
+import {IAuthUser} from 'app/types/user'
+
+export const ApplicantData: Partial<IAuthUser>
+
+export type ApplicationType = {
   id: number
-  avatar: string
-  username: string
-  githubURL?: string
-  gitlabURL?: string
-  bitbucketURL?: string
-  linkedinURL?: string
-  bio?: string
+  status: keyof typeof Status
 }
 
 export interface IApplicationData {
   id: number
-  user: IApplicantData
+  user: typeof ApplicantData
   position: {id: number; title: string; projectId: number}
 }

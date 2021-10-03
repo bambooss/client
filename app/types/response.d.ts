@@ -2,6 +2,7 @@ import type {IAuthUser} from 'app/types/user'
 import type {IProjectData} from 'app/types/project'
 import type {IPositionData} from 'app/types/position'
 import {SelectOptionsType} from 'app/types/form'
+import {ApplicantData} from 'app/types/application'
 
 export type StatusResponseType = {
   status: number
@@ -86,4 +87,11 @@ export type RolesResponseType = {
   status: number
   message: string
   roles: SelectOptionsType[]
+}
+
+//* Applicants
+export type ApplicantsResponseType = {
+  status: number
+  message: string
+  applicants: typeof ApplicantData[]
 }

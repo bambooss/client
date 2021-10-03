@@ -2,6 +2,8 @@ import * as React from 'react'
 import {SelectOptionsType} from 'app/types/form'
 import {PActions} from 'app/types/constants'
 import {Levels, Roles} from 'app/types/constants'
+import {ApplicationType} from 'app/types/application'
+
 export interface IPositionInput {
   projectId: number
   title: string
@@ -23,7 +25,7 @@ export interface IPositionData {
   role: SelectOptionsType
   projectId: number
   userId: number
-  applicants: number
+  applicants: ApplicationType[]
   createdAt: string
   updatedAt: string
 }
