@@ -18,7 +18,7 @@ const PositionOverview = ({
     <Panel index={index} isSelectedTab={isSelectedTab}>
       <section className='h-full w-full border-2 border-black p-2 rounded'>
         <PositionContents {...position} />
-        <article className='h-1/6 flex justify-between'>
+        <article className='h-12 flex justify-between'>
           <span className='text-xs'>
             {position.applicants.length
               ? `This position has ${position.applicants} applicants`
