@@ -14,7 +14,7 @@ function handleAxiosError(error: AxiosError): void {
     console.log('Error Request', error.request)
   } else {
     // Something happened in setting up the request that triggered an Error
-    console.log('Error Messgae', error.message)
+    console.log('Error Message', error.message)
   }
 }
 

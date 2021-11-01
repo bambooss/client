@@ -1,10 +1,9 @@
+import type {IPositionInput} from 'app/types/position'
+import {PActions} from 'app/types/constants'
+import type {PositionResponseType} from 'app/types/response'
+import {useFetchContext} from '@hooks/fetch/useFetchContext'
 import useModalContext from '@hooks/modal/useModalContext'
 import {usePositionContext} from '@hooks/position/usePositionContext'
-import {useFetchContext} from '@hooks/fetch/useFetchContext'
-
-import type {IPositionInput} from 'app/types/position'
-import type {PositionResponseType} from 'app/types/response'
-import {PActions} from 'app/types/constants'
 
 export default function useEditPosition(
   positionId: number,

@@ -1,9 +1,12 @@
 import * as React from 'react'
 
+import CancelButton from '@components/form/Button/Cancel'
 import Panel from '@components/route/Tablist/Panel'
 import PositionContents from '@components/Position/Contents'
 import type {PositionOverviewType} from 'app/types/position'
 import dynamic from 'next/dynamic'
+import {useAuthState} from '@hooks/auth/useAuthState'
+import useRemoveApplication from '@hooks/application/useRemoveApplication'
 
 const ConfirmApplication = dynamic(
   () => import('@components/Application/Confirm')
@@ -14,19 +17,27 @@ const PositionOverview = ({
   index,
   position,
 }: PositionOverviewType): JSX.Element => {
+  const {user} = useAuthState()
+  const handleConfirm = useRemoveApplication(position.id)
+  const isApplicant = !!position.applicants.find(
+    ({user: {id}}) => id === user?.id
+  )
   return (
     <Panel index={index} isSelectedTab={isSelectedTab}>
       <section className='h-full w-full border-2 border-black p-2 rounded'>
         <PositionContents {...position} />
         <article className='h-12 flex justify-between'>
           <span className='text-xs'>
-            {position.applicants.length
-              ? `This position has ${position.applicants} applicants`
+            {position.applicants.length || isApplicant
+              ? `This position has ${position.applicants.length} applicants`
               : 'Be the first to apply this position'}
           </span>
           <div>
-            {/* TODO: Handle retrieve application */}
-            <ConfirmApplication id={position.id} />
+            {isApplicant ? (
+              <CancelButton onClick={handleConfirm} />
+            ) : (
+              <ConfirmApplication id={position.id} />
+            )}
           </div>
         </article>
       </section>
